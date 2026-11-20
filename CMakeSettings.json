@@ -15,6 +15,16 @@
           "name": "CMAKE_TOOLCHAIN_FILE",
           "value": "C:/Users/wuyi7/scoop/apps/vcpkg/2026.06.24/scripts/buildsystems/vcpkg.cmake",
           "type": "FILEPATH"
+        },
+        {
+          "name": "VCPKG_TARGET_TRIPLET",
+          "value": "x64-windows",
+          "type": "STRING"
+        },
+        {
+          "name": "CMAKE_PREFIX_PATH",
+          "value": "C:/Users/wuyi7/scoop/apps/vcpkg/2026.06.24/installed/x64-windows",
+          "type": "PATH"
         }
       ]
     },
@@ -33,6 +43,16 @@
           "name": "CMAKE_TOOLCHAIN_FILE",
           "value": "C:/Users/wuyi7/scoop/apps/vcpkg/2026.06.24/scripts/buildsystems/vcpkg.cmake",
           "type": "FILEPATH"
+        },
+        {
+          "name": "VCPKG_TARGET_TRIPLET",
+          "value": "x64-windows",
+          "type": "STRING"
+        },
+        {
+          "name": "CMAKE_PREFIX_PATH",
+          "value": "C:/Users/wuyi7/scoop/apps/vcpkg/2026.06.24/installed/x64-windows",
+          "type": "PATH"
         }
       ]
     }

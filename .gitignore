@@ -1,5 +1,6 @@
 # Build directories
 build/
+build_sln/
 cmake-build-*/
 
 # IDE files
@@ -49,3 +50,6 @@ Thumbs.db
 *.jpg
 *.jpeg
 *.bmp
+
+# 但作业模型资源要保留（.obj 模型被上面的 *.obj 误伤，贴图被 *.png/*.jpg 误伤）
+!**/models/**

@@ -1,6 +1,7 @@
 #include "Triangle.hpp"
 #include "rasterizer.hpp"
 #include <Eigen/Eigen>
+#include <cmath>
 #include <iostream>
 #include <opencv2/opencv.hpp>
 
@@ -22,6 +23,10 @@ Eigen::Matrix4f get_view_matrix(Eigen::Vector3f eye_pos)
 Eigen::Matrix4f get_model_matrix(float rotation_angle)
 {
     Eigen::Matrix4f model = Eigen::Matrix4f::Identity();
+    model<<cos (rotation_angle / 180 * MY_PI), -sin(rotation_angle / 180 * MY_PI), 0, 0,
+        sin(rotation_angle / 180 * MY_PI), cos(rotation_angle / 180 * MY_PI), 0, 0,
+        0, 0, 1, 0,
+		0, 0, 0, 1;
 
     // TODO: Implement this function
     // Create the model matrix for rotating the triangle around the Z axis.
@@ -30,18 +35,26 @@ Eigen::Matrix4f get_model_matrix(float rotation_angle)
     return model;
 }
 
-Eigen::Matrix4f get_projection_matrix(float eye_fov, float aspect_ratio,
-                                      float zNear, float zFar)
+Eigen::Matrix4f get_projection_matrix(float eye_fov, float aspect_ratio, float zNear, float zFar)
 {
-    // Students will implement this function
+    // The camera looks down -Z. zNear and zFar are positive distances.
+    const float half_height = zNear * static_cast<float>(std::tan(eye_fov * MY_PI / 360.0));
+    const float half_width = aspect_ratio * half_height;
+    const float depth_range = zFar - zNear;
 
-    Eigen::Matrix4f projection = Eigen::Matrix4f::Identity();
+    Eigen::Matrix4f persp2ortho;
+    persp2ortho << zNear, 0, 0, 0,
+                   0, zNear, 0, 0,
+                   0, 0, zNear + zFar, zNear * zFar,
+                   0, 0, -1, 0;
 
-    // TODO: Implement this function
-    // Create the projection matrix for the given parameters.
-    // Then return it.
+    Eigen::Matrix4f ortho;
+    ortho << 1.0f / half_width, 0, 0, 0,
+             0, 1.0f / half_height, 0, 0,
+             0, 0, -2.0f / depth_range, -(zNear + zFar) / depth_range,
+             0, 0, 0, 1;
 
-    return projection;
+    return ortho * persp2ortho;
 }
 
 int main(int argc, const char** argv)
@@ -79,7 +92,7 @@ int main(int argc, const char** argv)
 
         r.set_model(get_model_matrix(angle));
         r.set_view(get_view_matrix(eye_pos));
-        r.set_projection(get_projection_matrix(45, 1, 0.1, 50));
+        r.set_projection(get_projection_matrix(45, 1, 0.1f, 50));
 
         r.draw(pos_id, ind_id, rst::Primitive::Triangle);
         cv::Mat image(700, 700, CV_32FC3, r.frame_buffer().data());
@@ -95,7 +108,7 @@ int main(int argc, const char** argv)
 
         r.set_model(get_model_matrix(angle));
         r.set_view(get_view_matrix(eye_pos));
-        r.set_projection(get_projection_matrix(45, 1, 0.1, 50));
+        r.set_projection(get_projection_matrix(45, 1, 0.1f, 50));
 
         r.draw(pos_id, ind_id, rst::Primitive::Triangle);
 
